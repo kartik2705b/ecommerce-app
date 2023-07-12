@@ -3,7 +3,7 @@ import { useCartContext } from "@/contexts/CartContext";
 import React from "react";
 
 const CheckoutPage = () => {
-  const { cartProducts } = useCartContext();
+  const { cartProducts, total } = useCartContext();
 
   return (
     <div className="flex justify-center text-sm text-gray-800">
@@ -48,13 +48,13 @@ const CheckoutPage = () => {
             <hr />
             <div className="mt-5 flex items-center justify-between">
               <h1>Subtotal</h1>
-              <h1>$30</h1>
+              <h1>${total}</h1>
             </div>
             <p className="underline my-3">Estimate Shipping</p>
             <hr />
             <div className="mt-5 mb-5 flex items-center justify-between">
               <h1>Total</h1>
-              <h1>$30</h1>
+              <h1>${total}</h1>
             </div>
             <button className="bg-orange-500 text-white px-4 py-2 block h-10 w-full">
               Checkout

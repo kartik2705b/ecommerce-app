@@ -34,7 +34,7 @@ const CheckoutCard: React.FC<{ product: Product; id: number }> = ({
                 />
                 <button className="text-base font-bold px-2 py-1">+</button>
               </div>
-              <h1>$31.00</h1>
+              <h1>${product.price}</h1>
               <button className="w-7 h-7" onClick={remove}>
                 X
               </button>

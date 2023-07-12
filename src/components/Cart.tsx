@@ -6,7 +6,7 @@ import { useCartContext } from "@/contexts/CartContext";
 interface Props {}
 
 const Cart: React.FC<Props> = ({}) => {
-  const { cartOpen, setCartOpen, cartProducts } = useCartContext();
+  const { cartOpen, setCartOpen, cartProducts, total } = useCartContext();
 
   return (
     <div
@@ -26,7 +26,7 @@ const Cart: React.FC<Props> = ({}) => {
         })}
 
         <p className="mt-16">Subtotal</p>
-        <p>$30</p>
+        <p>${total}</p>
       </div>
       <hr />
       <Link
