@@ -55,7 +55,7 @@ export default function Home() {
           </div>
         </div>
         <button className="lg:absolute mt-0 lg:-right-16 text-sm font-light lg:top-1/2 z-10 bg-black text-white px-8 py-1">
-          Let's Chat
+          Let&apos;s Chat
         </button>
       </div>
 
