@@ -16,7 +16,7 @@ const ListingPage = () => {
           </h1>
         </div>
       </div>
-      <div className="absolute right-12 top-80 hidden lg:block">
+      <div className="absolute right-12 top-80 hidden lg:block z-10">
         <LetsChatButton></LetsChatButton>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-9 mt-16">

@@ -101,7 +101,9 @@ const Navbar: React.FC<Props> = ({}) => {
       </nav>
       {visible && (
         <ul className="lg:hidden flex gap-4 flex-col lg:flex-row my-4">
-          <li>Shop All</li>
+          <li>
+            <Link href="/">Shop All</Link>
+          </li>
           <li>
             <Link href="/listing">Women</Link>
           </li>

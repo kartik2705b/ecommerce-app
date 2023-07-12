@@ -12,6 +12,7 @@ const DetailsPage = () => {
   const { addProductToCart } = useCartContext();
   const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
+  const [image, setImage] = useState<any>(null);
 
   useEffect(() => {
     const id = Number(router.query.id);
@@ -21,6 +22,10 @@ const DetailsPage = () => {
 
   const addToCart = () => {
     addProductToCart(product);
+  };
+
+  const changeImage = (img: any) => {
+    setImage(img);
   };
 
   return (
@@ -42,31 +47,22 @@ const DetailsPage = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="">
             <img
-              src={product?.url || ""}
+              src={image ? image.url : product?.url || ""}
               alt=""
               className="h-auto lg:w-full object-cover"
             />
             <div className="flex my-4">
-              <img
-                src="https://assets.ajio.com/medias/sys_master/root/ajio/catalog/5eff26aff997dd433b487123/-473Wx593H-410223788-navy-MODEL.jpg"
-                alt=""
-                className="w-10 h-10 object-cover border border-black mx-2"
-              />
-              <img
-                src="https://assets.ajio.com/medias/sys_master/root/ajio/catalog/5eff26aff997dd433b487123/-473Wx593H-410223788-navy-MODEL.jpg"
-                alt=""
-                className="w-10 h-10 object-cover border border-black mx-2"
-              />
-              <img
-                src="https://assets.ajio.com/medias/sys_master/root/ajio/catalog/5eff26aff997dd433b487123/-473Wx593H-410223788-navy-MODEL.jpg"
-                alt=""
-                className="w-10 h-10 object-cover border border-black mx-2"
-              />
-              <img
-                src="https://assets.ajio.com/medias/sys_master/root/ajio/catalog/5eff26aff997dd433b487123/-473Wx593H-410223788-navy-MODEL.jpg"
-                alt=""
-                className="w-10 h-10 object-cover border border-black mx-2"
-              />
+              {product?.extra_images.map((img: any, idx: number) => {
+                return (
+                  <img
+                    key={idx}
+                    onClick={() => changeImage(img)}
+                    src={img.url}
+                    alt=""
+                    className="w-10 h-10 object-cover border-black border mx-2"
+                  />
+                );
+              })}
             </div>
             <div className="text-justify">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex ipsum

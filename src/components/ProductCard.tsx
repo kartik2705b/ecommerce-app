@@ -15,13 +15,13 @@ const ProductCard: React.FC<Props> = ({ product, id }) => {
         src={product["product-image-url"]}
         className="w-full h-72 object-top object-cover bg-top bg-gray-300"
       ></img> */}
-      <div className="relative">
+      <div className="relative z-0">
         <Image
           src={product.url}
           alt=""
           width={200}
           height={400}
-          className="w-full"
+          className="w-full z-0"
         ></Image>
         {product.bestseller && (
           <div className="absolute top-0 left-0 bg-orange-500 px-2 py-1 text-white">
