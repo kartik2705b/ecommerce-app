@@ -52,7 +52,9 @@ const Navbar: React.FC<Props> = ({}) => {
 
         <div className="hidden lg:flex gap-10 text-sm flex-col lg:flex-row mt-10 lg:mt-0 ">
           <ul className="flex gap-4 flex-col lg:flex-row">
-            <li>Shop All</li>
+            <li>
+              <Link href="/">Shop All</Link>
+            </li>
             <li>
               <Link href="/listing">Women</Link>
             </li>

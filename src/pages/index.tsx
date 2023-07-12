@@ -12,9 +12,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-orange-500  h-60 flex gap-3 text-white items-center justify-center flex-col">
+      <div className="bg-orange-500  px-5 py-5 flex gap-3 text-white items-center justify-center flex-col">
         <p className="text-4xl font-medium">FREE SHIPPING</p>
-        <p className="text-2xl font-normal">
+        <p className="text-2xl font-normal text-center">
           ON ORDERS OVER $50 - USE COUPON CODE OVER50
         </p>
         <div className="flex gap-1 lg:gap-10 mt-3 flex-col lg:flex-row">
@@ -29,16 +29,36 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="relative">
-        <div className="h-80 mt-3 mb-14  grid sm:grid-cols-7 grid-cols-3  overflow-hidden">
-          <div className="col-span-1 sm:col-span-2 flex">
-            <img
+      <div className="relative ">
+        <div className="z-0 w-full mt-3 mb-14 bg-gray-200 flex flex-wrap overflow-hidden">
+          <div className="w-full sm:w-1/2 lg:w-3/12 overflow-hidden  h-80">
+            <Image
               src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/d/9/tr:w-960,/d9456aaNYKF_GLOOT00000238_1.jpg?rnd=20200526195200"
               alt=""
-              className="object-cover overflow-hidden flex-1 object-bottom"
-            />
+              className="h-full object-cover object-top"
+              width={600}
+              height={200}
+            ></Image>
           </div>
-          <div className="col-span-1 sm:col-span-2 flex">
+          <div className="w-full sm:w-1/2 lg:w-3/12 overflow-hidden h-80">
+            <Image
+              src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/6/4/tr:w-960,/647c231P-53923701_1.jpg?rnd=20200526195200"
+              alt=""
+              className="h-full object-cover object-top"
+              width={600}
+              height={200}
+            ></Image>
+          </div>
+          <div className="w-full lg:w-6/12 overflow-hidden  h-80">
+            <Image
+              src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/8/2/tr:w-960,/829baf8KL_THECB00013476_1.jpg?rnd=20200526195200"
+              alt=""
+              className="h-full object-cover object-top"
+              width={1200}
+              height={200}
+            ></Image>
+          </div>
+          {/* <div className="col-span-1 sm:col-span-2 flex">
             <img
               src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/6/4/tr:w-960,/647c231P-53923701_1.jpg?rnd=20200526195200"
               alt=""
@@ -52,7 +72,7 @@ export default function Home() {
               className=" object-cover overflow-hidden z-0 flex-1 relative"
               // className="flex-1"
             ></img>
-          </div>
+          </div> */}
         </div>
         <button className="lg:absolute mt-0 lg:-right-16 text-sm font-light lg:top-1/2 z-10 bg-black text-white px-8 py-1">
           Let&apos;s Chat
