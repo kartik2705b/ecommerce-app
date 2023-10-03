@@ -21,8 +21,15 @@ const Cart: React.FC<Props> = ({}) => {
         <div></div>
       </div>
       <div className="px-3 py-3">
-        {cartProducts.map((product, idx) => {
-          return <CartCard key={idx} product={product} id={idx}></CartCard>;
+        {cartProducts.map((data, idx) => {
+          return (
+            <CartCard
+              key={idx}
+              product={data.product}
+              id={data.product._id}
+              quantity={data.quantity}
+            ></CartCard>
+          );
         })}
 
         <p className="mt-16">Subtotal</p>

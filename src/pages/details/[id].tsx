@@ -6,27 +6,56 @@ import { useRouter } from "next/router";
 import { Product } from "@/lib/product";
 import { useCartContext } from "@/contexts/CartContext";
 import Carousel from "@/components/Carousel";
+import useFetch from "@/hooks/useFetch";
+import { useAuthContext } from "@/contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const DetailsPage = () => {
-  const { products } = useProductsContext();
+  const id = useRouter().query.id;
+  const { fetchData, data, error, loading } = useFetch({
+    url: `/product/${id}`,
+    onRender: false,
+  });
+  // const { products } = useProductsContext();
   const { addProductToCart } = useCartContext();
-  const router = useRouter();
+  // const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
-  const [image, setImage] = useState<any>(null);
+  const [imageIdx, setImageIdx] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const { loggedIn } = useAuthContext();
+  const router = useRouter();
+  // const [image, setImage] = useState<any>(null);
 
   useEffect(() => {
-    const id = Number(router.query.id);
-    console.log(id);
-    setProduct(products[id]);
-  }, [router.query.id, products]);
+    if (id) {
+      fetchData();
+      // setProduct(data);
+    }
+    // fetchData();
+    // console.log(router.query.id);
+    // setProduct(data);
+    console.log(data);
+  }, [id]);
 
-  const addToCart = () => {
-    addProductToCart(product);
+  useEffect(() => {
+    setProduct(data);
+  }, [data]);
+
+  const addToCart = async () => {
+    if (!loggedIn) {
+      await router.push("/login");
+      return;
+    }
+    addProductToCart(product, quantity);
+    toast.success("Product added to cart!");
   };
 
-  const changeImage = (img: any) => {
-    setImage(img);
+  const changeImage = (idx) => {
+    // setImage(img);
+    setImageIdx(idx);
   };
+
+  console.log(product);
 
   return (
     <div className="flex justify-center text-sm text-gray-800">
@@ -34,8 +63,8 @@ const DetailsPage = () => {
         <div className="flex items-center justify-between">
           <div className="my-10 text-gray-700">
             <span className="mx-1">Home</span>/
-            <span className="mx-1">Women</span>/
-            <span className="mx-1 text-gray-500">{product?.product_name}</span>
+            <span className="mx-1">{product?.category}</span>/
+            <span className="mx-1 text-gray-500">{product?.name}</span>
           </div>
           <div className="" style={{ wordSpacing: "10px" }}>
             <span className="mx-1">{"<"}</span>
@@ -47,16 +76,16 @@ const DetailsPage = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="">
             <img
-              src={image ? image.url : product?.url || ""}
+              src={product?.images[imageIdx].url}
               alt=""
-              className="h-auto lg:w-full object-cover"
+              className="h-2/3 lg:w-full object-cover"
             />
             <div className="flex my-4">
-              {product?.extra_images.map((img: any, idx: number) => {
+              {product?.images.map((img, idx) => {
                 return (
                   <img
                     key={idx}
-                    onClick={() => changeImage(img)}
+                    onClick={() => changeImage(idx)}
                     src={img.url}
                     alt=""
                     className="w-10 h-10 object-cover border-black border mx-2"
@@ -64,37 +93,41 @@ const DetailsPage = () => {
                 );
               })}
             </div>
-            <div className="text-justify">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex ipsum
-              maiores ea illo ducimus fugit cupiditate minima est ab aut
-              mollitia nesciunt repellat debitis animi libero soluta eos, nobis
-              voluptatem.
-            </div>
+            <div className="text-justify">{product?.secondary_description}</div>
           </div>
           <div className="">
             <h1 className="text-4xl text-black font-medium mb-3">
-              {product?.product_name}
+              {product?.name}
             </h1>
-            <p>SKU: 0011</p>
+            <p>SKU: {product?.sku_id}</p>
             <p className="text-orange-500 my-4">
-              <span className="line-through mr-2">$42</span>
-              <span>$39.90</span>
+              <span className="mr-2">${product?.price}</span>
             </p>
             <div className="my-4">
               <p className="mb-2">Color</p>
               <div className="flex gap-3">
-                <div className="rounded-full bg-red-600 w-4 h-4 border"></div>
-                <div className="rounded-full bg-white w-4 h-4 border"></div>
+                {product?.colors.map((color, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className="rounded-full w-4 h-4 border"
+                      style={{ backgroundColor: color }}
+                    ></div>
+                  );
+                })}
               </div>
             </div>
 
             <div className="my-4">
               <p className="mb-2">Size</p>
               <select className="w-full border bg-white px-2 py-1 focus:outline-none">
-                <option value="volvo">Small</option>
-                <option value="saab">Large</option>
-                <option value="mercedes">Xl</option>
-                <option value="audi">XXL</option>
+                {product?.sizes.map((size, idx) => {
+                  return (
+                    <option key={idx} value={size}>
+                      {size}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 
@@ -104,6 +137,8 @@ const DetailsPage = () => {
                 type="text"
                 placeholder="1"
                 className="border px-2 focus:outline-none py-1 bg-white w-10"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
               />
             </div>
 
@@ -125,29 +160,18 @@ const DetailsPage = () => {
                 </svg>
               </button>
             </div>
-            <button className="bg-black mt-4 text-white px-4 py-2 block h-10 w-full">
+            {/* <button className="bg-black mt-4 text-white px-4 py-2 block h-10 w-full">
               Buy Now
-            </button>
+            </button> */}
 
             <div className="mt-4">
-              <InformationCard title="PRODUCT INFO">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Repellendus odio doloribus voluptates. Ab tempore sunt illo ut!
-                Dolores, nobis expedita officiis nesciunt vero totam incidunt,
-                sint et at animi iste!
-              </InformationCard>
-              <InformationCard title="RETURN AND REFUND POLICY">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Repellendus odio doloribus voluptates. Ab tempore sunt illo ut!
-                Dolores, nobis expedita officiis nesciunt vero totam incidunt,
-                sint et at animi iste!
-              </InformationCard>
-              <InformationCard title="SHIPPING INFO">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Repellendus odio doloribus voluptates. Ab tempore sunt illo ut!
-                Dolores, nobis expedita officiis nesciunt vero totam incidunt,
-                sint et at animi iste!
-              </InformationCard>
+              {product?.extra_fields.map((info, idx) => {
+                return (
+                  <InformationCard key={idx} title={info.title}>
+                    {info.description}
+                  </InformationCard>
+                );
+              })}
             </div>
           </div>
         </section>

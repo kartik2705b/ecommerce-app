@@ -1,6 +1,8 @@
+import AdminNavbar from "@/components/AdminNavbar";
 import Cart from "@/components/Cart";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { useCartContext } from "@/contexts/CartContext";
 import React, { PropsWithChildren, useState } from "react";
 
@@ -8,6 +10,7 @@ interface Props extends PropsWithChildren {}
 
 const Layout: React.FC<Props> = ({ children }) => {
   const { cartOpen } = useCartContext();
+  const { loggedIn } = useAuthContext();
 
   return (
     <>

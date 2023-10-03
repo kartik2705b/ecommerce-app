@@ -4,12 +4,35 @@ import product_data from "@/lib/product_data";
 import ProductCard from "@/components/ProductCard";
 import useFetch from "@/hooks/useFetch";
 import { useProductsContext } from "@/contexts/ProductsContext";
+import { Product } from "@/lib/product";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
-  const { products } = useProductsContext();
+export const getServerSideProps: GetServerSideProps<{
+  products: Product[];
+  total_pages: number;
+}> = async () => {
+  const data = await fetch(`http://localhost:9001/product/`);
+  const output = await data.json();
 
+  if (output) {
+    return {
+      props: { products: output.products, total_pages: output.total_pages },
+    };
+  }
+  return {
+    props: {
+      products: [],
+      total_pages: 0,
+    },
+  };
+};
+
+export default function Home({
+  products,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <div className="bg-orange-500  px-5 py-5 flex gap-3 text-white items-center justify-center flex-col">
@@ -18,12 +41,16 @@ export default function Home() {
           ON ORDERS OVER $50 - USE COUPON CODE OVER50
         </p>
         <div className="flex gap-1 lg:gap-10 mt-3 flex-col lg:flex-row">
-          <div className="border-white border-2 px-8 py-1 hover:bg-orange-600">
-            Shop Women
-          </div>
-          <div className="border-white border-2 px-8 py-1 hover:bg-orange-600">
-            Shop Men
-          </div>
+          <Link href={"/listing?category=women"}>
+            <div className="border-white border-2 px-8 py-1 hover:bg-orange-600">
+              Shop Women
+            </div>
+          </Link>
+          <Link href={"/listing?category=men"}>
+            <div className="border-white border-2 px-8 py-1 hover:bg-orange-600">
+              Shop Men
+            </div>
+          </Link>
           <div className="border-white border-2 px-8 py-1 hover:bg-orange-600">
             Shop Sale
           </div>
@@ -89,9 +116,13 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-9 mt-16">
-          {products.map((product, idx) => {
+          {products?.map((product, idx) => {
             return (
-              <ProductCard key={idx} product={product} id={idx}></ProductCard>
+              <ProductCard
+                key={idx}
+                product={product}
+                id={product._id}
+              ></ProductCard>
             );
           })}
           {/* {product_data.map((product, idx) => {
@@ -99,9 +130,11 @@ export default function Home() {
           })} */}
         </div>
         <div className="flex mt-20 mb-10 items-center justify-center">
-          <div className="border-4 border-orange-500 text-orange-500 px-6 py-1 h-10">
-            Shop All
-          </div>
+          <Link href={"/listing"}>
+            <div className="border-4 border-orange-500 text-orange-500 px-6 py-1 h-10">
+              Shop All
+            </div>
+          </Link>
           <div className="h-10 w-10 flex items-center justify-center text-white ml-1 bg-orange-500">
             {">"}
           </div>

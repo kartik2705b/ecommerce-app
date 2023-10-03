@@ -1,9 +1,30 @@
 import CheckoutCard from "@/components/CheckoutCard";
 import { useCartContext } from "@/contexts/CartContext";
+import { api } from "@/utils/axios";
+import { useRouter } from "next/router";
 import React from "react";
+import toast from "react-hot-toast";
 
 const CheckoutPage = () => {
-  const { cartProducts, total } = useCartContext();
+  const { cartProducts, total, updateCart } = useCartContext();
+  const router = useRouter();
+
+  const handleCheckout = async () => {
+    try {
+      if (cartProducts.length === 0) {
+        toast.error("Cart should not be empty while placing order");
+        return;
+      }
+      const data = (await api.post("/order/create")).data;
+      console.log(data);
+      updateCart([]);
+      await router.push(`/confirmed/${data._id}`);
+      toast.success("Order Placed");
+    } catch (err) {
+      console.log(err);
+      toast.error("Some error occured");
+    }
+  };
 
   return (
     <div className="flex justify-center text-sm text-gray-800">
@@ -12,12 +33,13 @@ const CheckoutPage = () => {
           <div className="md:col-span-2">
             <h1 className="text-lg mb-2">My Cart</h1>
             <hr />
-            {cartProducts.map((product, idx) => {
+            {cartProducts.map((data, idx) => {
               return (
                 <CheckoutCard
                   key={idx}
-                  product={product}
-                  id={idx}
+                  product={data.product}
+                  id={data.product._id}
+                  quantity={data.quantity}
                 ></CheckoutCard>
               );
             })}
@@ -56,7 +78,10 @@ const CheckoutPage = () => {
               <h1>Total</h1>
               <h1>${total}</h1>
             </div>
-            <button className="bg-orange-500 text-white px-4 py-2 block h-10 w-full">
+            <button
+              className="bg-orange-500 text-white px-4 py-2 block h-10 w-full"
+              onClick={handleCheckout}
+            >
               Checkout
             </button>
             <div className="text-center font-bold text-lg mt-3 flex items-cente justify-center">

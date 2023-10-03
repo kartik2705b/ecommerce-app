@@ -5,7 +5,7 @@ import React, { PropsWithChildren } from "react";
 
 interface Props extends PropsWithChildren {
   product: Product;
-  id: number;
+  id: string;
 }
 
 const ProductCard: React.FC<Props> = ({ product, id }) => {
@@ -17,20 +17,18 @@ const ProductCard: React.FC<Props> = ({ product, id }) => {
       ></img> */}
       <div className="relative z-0">
         <Image
-          src={product.url}
+          src={product.images[0].url}
           alt=""
           width={200}
           height={400}
-          className="w-full z-0"
+          className="w-full h-96 object-cover"
         ></Image>
         {product.bestseller && (
           <div className="absolute top-0 left-0 bg-orange-500 px-2 py-1 text-white">
             Bestseller
           </div>
         )}
-        <div className="font-medium text-sm text-gray-600">
-          {product.product_name}
-        </div>
+        <div className="font-medium text-sm text-gray-600">{product.name}</div>
         <div className="text-orange-400 font-medium text-sm">
           ${product.price}
         </div>
